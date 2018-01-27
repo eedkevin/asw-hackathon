@@ -50,7 +50,7 @@ export const products = (state = initialState, action) => {
         ...state,
         items: newItems,
         prevSum: state.sum,
-        sum: Object.keys(newItems).reduce((sum, k, v) => sum + newItems[v].count * newItems[v].price, 0),
+        sum: Object.keys(newItems).reduce((sum, v) => sum + newItems[v].count * newItems[v].price, 0),
       };
     }
     default:
