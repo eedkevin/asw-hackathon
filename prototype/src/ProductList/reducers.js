@@ -35,7 +35,7 @@ export const products = (state = initialState, action) => {
         ...state,
         items: newItems,
         prevSum: state.sum,
-        sum: state.sum - (state.items[action.payload.productID] === 0 ? 0 : action.payload.price),
+        sum: state.sum - ((!state.items[action.payload.productID] || state.items[action.payload.productID].count === 0) ? 0 : action.payload.price),
       };
     }
     case UPDATE_PRODUCT_IN_CART: {
