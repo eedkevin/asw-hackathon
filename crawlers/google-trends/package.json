@@ -1,0 +1,16 @@
+{
+  "name": "google-trends",
+  "version": "1.0.0",
+  "description": "google-trends crawler for asw hackathon",
+  "main": "index.js",
+  "repository": "https://github.com/eedkevin/asw-hackathon.git ",
+  "author": "raymondsze",
+  "license": "MIT",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "axios": "^0.17.1",
+    "google-trends-api": "^4.4.0"
+  }
+}
