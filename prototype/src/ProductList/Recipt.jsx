@@ -1,15 +1,25 @@
 import React from 'react';
-import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import moment from 'moment';
+import { compose, setDisplayName } from 'recompose';
 import { format } from 'currency-formatter';
 import { withStyles } from 'material-ui/styles';
 import Divider from 'material-ui/Divider';
-import Paper from 'material-ui/Paper';
+import Dialog from 'material-ui/Dialog';
 import List, { ListItem, ListItemText } from 'material-ui/List';
 import QRCode from 'qrcode-react';
 import Typography from 'material-ui/Typography';
 
 const enhance = compose(
+  setDisplayName('@pages/ProductList'),
+  connect(state => ({
+    items: state.products.items,
+    sum: state.products.sum,
+  })),
   withStyles({
+    dialog: {
+      maxWidth: 400,
+    },
     priceSum: {
       textAlign: 'right',
     },
@@ -17,6 +27,7 @@ const enhance = compose(
 );
 
 const ProductItem = compose(
+  setDisplayName('@components/ProductItem'),
   withStyles({
     product: {
       textAlign: 'left',
@@ -32,11 +43,23 @@ const ProductItem = compose(
   </ListItem>
 ));
 
-const ShoppingCart = ({ classes }) => (
-  <Paper style={{ margin: 16, maxWidth: 400, minHeight: 600 }}>
+const Recipt = ({ classes, items, sum, open, onClose }) => (
+  <Dialog classes={{ paper: classes.dialog }} open={open} onClose={onClose}>
     <div style={{ padding: 16 }}>
       <Typography type="title" align="center">
         A.S Watsons Hackathon
+      </Typography>
+      <Typography type="subheading" align="center">
+        Lucky12
+      </Typography>
+      <Typography type="subheading" align="center">
+        XXXXX XXXXX XXXXX XXXXX
+      </Typography>
+      <Typography type="subheading" align="center">
+        XXXXX XXXXX XXXXXX
+      </Typography>
+      <Typography type="subheading" align="center">
+        XXXXX XXXXX
       </Typography>
       <Typography type="body1" align="center">
         TEL. NO: XXX-XXXX-XXXX FAX. NO: XXX-XXXX-XXXX
@@ -45,21 +68,20 @@ const ShoppingCart = ({ classes }) => (
     <Divider />
     <ListItem>
       <ListItemText style={{ textAlign: 'left' }} primary="Date" />
-      <ListItemText style={{ textAlign: 'right' }} primary="2018/01/27" />
+      <ListItemText style={{ textAlign: 'right' }} primary={moment().format('YYYY-MM-DD')} />
     </ListItem>
     <ListItem>
-      <ListItemText style={{ textAlign: 'left' }} primary="Server" />
-      <ListItemText style={{ textAlign: 'right' }} primary="system" />
+      <ListItemText style={{ textAlign: 'left' }} primary="Machine ID" />
+      <ListItemText style={{ textAlign: 'right' }} primary="Lucky12" />
     </ListItem>
     <Divider />
     <List>
-      <ProductItem product="Product1" quantity={10} price={100} />
-      <ProductItem product="Product1" quantity={10} price={100}  />
-      <ProductItem product="Product1" quantity={10} price={100}  />
-      <ProductItem product="Product1" quantity={10} price={100}  />
+      {Object.keys(items).map(key => items[key].count === 0 ? null : (
+        <ProductItem key={items[key].id} product={items[key].name} quantity={items[key].count} price={items[key].price} />
+      ))}
       <Divider />
       <ListItem>
-        <ListItemText className={classes.priceSum} primary={format(400, { code: 'HKD' })} />
+        <ListItemText className={classes.priceSum} primary={format(sum, { code: 'HKD' })} />
       </ListItem>
       <div style={{ margin: 16 }}>
       <Typography type="body1" align="left" gutterBottom>
@@ -79,14 +101,14 @@ const ShoppingCart = ({ classes }) => (
               <div style={{ flex: '1 1 auto' }} />
               <Divider />
               <Typography type="caption" align="left" component="span">
-                Expired Date: 2018-03-30
+                Expired Date: {moment().add(3, 'months').format('YYYY-MM-DD')}
               </Typography>
             </div>
           </div>
         </div>
       </div>
     </List>
-  </Paper>
+  </Dialog>
 );
 
-export default enhance(ShoppingCart);
+export default enhance(Recipt);

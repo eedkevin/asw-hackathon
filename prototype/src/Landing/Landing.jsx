@@ -1,16 +1,33 @@
 import React from 'react';
-import { compose, setDisplayName } from 'recompose';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+import { compose, setDisplayName, withState, withHandlers, pure } from 'recompose';
 import { withStyles } from 'material-ui/styles';
 import Typography from 'material-ui/Typography';
 import Input from 'material-ui/Input';
-import Heart from 'material-ui-icons/Favorite';
 import Button from 'material-ui/Button';
 
+import { setMemberID } from './actions';
 import bannerJPG from './images/banner.jpg';
 import cardPNG from './images/memberCard.png';
 
 const enhance = compose(
+  withRouter,
   setDisplayName('@pages/Landing'),
+  pure,
+  connect(null, (dispatch) => ({
+    updateMemberIDinStore: id => dispatch(setMemberID(id)),
+  })),
+  withState('memberID', 'setMemberID', null),
+  withHandlers({
+    onInputChange: props => event => {
+      props.setMemberID(event.currentTarget.value);
+    },
+    onShoppingBtnClick: props => () => {
+      props.updateMemberIDinStore(props.memberID);
+      props.history.push('products');
+    },
+  }),
   withStyles(theme => ({
     root: {
       height: '100vh',
@@ -77,36 +94,41 @@ const enhance = compose(
       bottom: 'calc(50% - 80px)',
       right: 0,
       color: '#fff',
-      fontWeight: 800,
       background: '#00a99d',
     },
     cardArea: {
       position: 'relative',
       overflow: 'hidden',
     },
+    team: {
+      color: '#00a99d',
+      fontWeight: 800,
+    },
   })),
 );
 
 const LandingComponent = ({
   classes,
+  onInputChange,
+  onShoppingBtnClick,
 }) => (
   <div className={classes.root}>
     <div className={classes.background} />
     <div className={classes.cardArea} >
-      <img className={classes.memberCard} src={cardPNG} />
+      <img className={classes.memberCard} src={cardPNG} alt="background" />
     </div>
     <div className={classes.inputArea}>
-      <Typography type="title" color="inherit">
+      <Typography type="subheading" color="inherit">
         Member ID
       </Typography>
       <div className={classes.flex} />
-      <Input disableUnderline className={classes.input} inputProps={{ style: { textAlign: 'right' } }} />
-      <Button className={classes.demoButton} raised color="primary">
-        Demo
+      <Input onChange={onInputChange} disableUnderline className={classes.input} inputProps={{ style: { textAlign: 'right' } }} />
+      <Button onClick={onShoppingBtnClick} className={classes.demoButton} raised color="primary">
+        Shopping Now
       </Button>
     </div>
     <Typography type="body2">
-      <span style={{ color: '#00a99d', fontWeight: 800 }}>Lucky12 @ A.S. WATSON HACKATHON</span>
+      <span className={classes.team}>Lucky12 @ A.S. WATSON HACKATHON</span>
     </Typography>
   </div>
 );

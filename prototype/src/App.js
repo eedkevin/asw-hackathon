@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
-import Grid from 'material-ui/Grid';
+import { ConnectedRouter } from 'react-router-redux';
+import { Route } from 'react-router';
 import { createMuiTheme, MuiThemeProvider } from 'material-ui/styles';
 import { createHashHistory } from 'history';
 import configureStore from './store';
-import ShoppingCart from './ShoppingCart';
 import ProductList from './ProductList';
 import Landing from './Landing';
-import logo from './logo.svg';
-import './App.css';
 
+import Reboot from 'material-ui/Reboot';
 import cyan from 'material-ui/colors/cyan';
 import red from 'material-ui/colors/red';
 import lightBlue from 'material-ui/colors/lightBlue';
@@ -30,16 +29,13 @@ class App extends Component {
     return (
       <Provider store={store}>
         <MuiThemeProvider theme={muiTheme}>
-          {/* <header className="App-header">
-            <img src={logo} className="App-logo" alt="logo" />
-            <h1 className="App-title">Welcome to React</h1>
-          </header>
-          <p className="App-intro">
-            To get started, edit <code>src/App.js</code> and save to reload.
-          </p> */}
-          <Landing />
-          <ProductList />
-          <ShoppingCart />
+          <Reboot />
+          <ConnectedRouter history={hashHistory}>
+            <main>
+              <Route exact path="/" component={Landing} />
+              <Route exact path="/products" component={ProductList} />
+            </main>
+          </ConnectedRouter>
         </MuiThemeProvider>
       </Provider>
     );
