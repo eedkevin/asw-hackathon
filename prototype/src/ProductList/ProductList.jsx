@@ -23,7 +23,6 @@ const ProductItem = compose(
   withStyles({
     root: {
       margin: 8,
-      maxWidth: 300,
     },
     media: {
       height: 200,
@@ -60,20 +59,22 @@ const ProductItem = compose(
 ));
 
 const ProductList = ({ classes }) => (
-  <Grid container spacing={0}>
-    <Grid xs={12} sm={6} md={4} lg={3}>
-      <ProductItem product="Product1" quantity={10} price={100} />
+  <div style={{ maxWidth: 1280, margin: 'auto' }}>
+    <Grid container spacing={0}>
+      <Grid xs={12} sm={6} md={4} lg={3}>
+        <ProductItem product="Product1" quantity={10} price={100} />
+      </Grid>
+      <Grid xs={12} sm={6} md={4} lg={3}>
+        <ProductItem product="Product1" quantity={10} price={100} />
+      </Grid>
+      <Grid xs={12} sm={6} md={4} lg={3}>
+        <ProductItem product="Product1" quantity={10} price={100} />
+      </Grid>
+      <Grid xs={12} sm={6} md={4} lg={3}>
+        <ProductItem product="Product1" quantity={10} price={100} />
+      </Grid>
     </Grid>
-    <Grid xs={12} sm={6} md={4} lg={3}>
-      <ProductItem product="Product1" quantity={10} price={100} />
-    </Grid>
-    <Grid xs={12} sm={6} md={4} lg={3}>
-      <ProductItem product="Product1" quantity={10} price={100} />
-    </Grid>
-    <Grid xs={12} sm={6} md={4} lg={3}>
-      <ProductItem product="Product1" quantity={10} price={100} />
-    </Grid>
-  </Grid>
+  </div>
 );
 
 export default enhance(ProductList);
