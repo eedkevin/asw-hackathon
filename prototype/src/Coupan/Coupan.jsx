@@ -39,19 +39,17 @@ const enhance = compose(
 );
 
 const CoupanComponent = ({
-  open,
-  onClose,
   id,
   name,
   image,
   classes,
   discount,
 }) => (
-  <Dialog open={open} onClose={onClose} fullScreen>
+  <Dialog open fullScreen>
     <DialogContent>
       <div className={classes.content}>
         <div className={classes.imageContainer}>
-          <img className={classes.image} src={image} alt="coupan" />
+          <img className={classes.image} src={image} alt="" />
         </div>
         <div>
           <Typography className={classes.title} type="display1" color="primary" align="left">Coupan</Typography>

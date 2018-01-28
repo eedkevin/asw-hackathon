@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
 import moment from 'moment';
 import { compose, setDisplayName, withState } from 'recompose';
 import { format } from 'currency-formatter';
@@ -9,10 +10,10 @@ import Dialog from 'material-ui/Dialog';
 import List, { ListItem, ListItemText } from 'material-ui/List';
 import QRCode from 'qrcode-react';
 import Typography from 'material-ui/Typography';
-import Coupan from './Coupan';
 
 const enhance = compose(
   setDisplayName('@pages/ProductList'),
+  withRouter,
   connect(state => ({
     items: state.products.items,
     sum: state.products.sum,
@@ -57,7 +58,7 @@ const ProductItem = compose(
   </Typography>
 ));
 
-const Recipt = ({ classes, items, sum, open, onClose, coupanOpen, setCoupanOpen }) => (
+const Recipt = ({ classes, history, items, sum, open, onClose, coupanOpen, setCoupanOpen }) => (
   <Dialog classes={{ paper: classes.dialog }} open={open} onClose={onClose}>
     <div style={{ padding: 16 }}>
       <Typography type="subheading" align="center">
@@ -106,7 +107,7 @@ const Recipt = ({ classes, items, sum, open, onClose, coupanOpen, setCoupanOpen 
       </Typography>
         <div style={{ display: 'flex' }}>
           <div style={{ position: 'relative' }}>
-            <span onClick={() => setCoupanOpen(true)} style={{ float: 'left', marginRight: 16 }}>
+            <span onClick={() => history.push('coupan')} style={{ float: 'left', marginRight: 16 }}>
               <QRCode />
             </span>
             <div style={{ height: 'calc(100% - 4px)', display: 'flex', flexDirection: 'column' }}>
@@ -125,7 +126,6 @@ const Recipt = ({ classes, items, sum, open, onClose, coupanOpen, setCoupanOpen 
         </div>
       </div>
     </List>
-    <Coupan open={coupanOpen} />
   </Dialog>
 );
 
