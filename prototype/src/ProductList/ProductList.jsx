@@ -64,7 +64,7 @@ const ProductItem = compose(
         {name}
       </Typography>
       <div className={classes.flex} />
-      <Typography type="subheading" align="right" color={quantity > 0 ? 'primary' : undefined}>
+      <Typography type="body2" align="right" color={quantity > 0 ? 'primary' : undefined}>
         {format(price, { code: 'HKD' })}
       </Typography>
     </CardContent>
@@ -85,7 +85,7 @@ const ProductItem = compose(
 ));
 
 const enhance = compose(
-  setDisplayName('@pages/ShoppingCart'),
+  setDisplayName('@pages/ProductList'),
   pure,
   connect(state => ({
     memberID: state.landing.memberID,
@@ -93,22 +93,27 @@ const enhance = compose(
     sum: state.products.sum,
     prevSum: state.products.prevSum,
   }), dispatch => ({
-    addItem: (id, price) => dispatch(addProductInCart(id, +price)),
-    removeItem: (id, price) => dispatch(removeProductInCart(id, +price)),
-    updateItem: (id, price, quantity) => dispatch(updateProductInCart(id, +price, +quantity)),
+    addItem: (id, price, name) => dispatch(addProductInCart(id, +price, name)),
+    removeItem: (id, price, name) => dispatch(removeProductInCart(id, +price, name)),
+    updateItem: (id, price, name, quantity) => dispatch(updateProductInCart(id, +price, name, +quantity)),
   })),
   withState('reciptOpen', 'setReciptOpen', false),
   withHandlers({
-    onAdd: props => (id, price) => event => props.addItem(id, +price), 
-    onRemove: props => (id, price) => event => props.removeItem(id, +price),
-    onUpdate: props => (id, price) => event => props.updateItem(id, +price, +event.currentTarget.value),
+    onAdd: props => (id, price, name) => event => props.addItem(id, +price, name), 
+    onRemove: props => (id, price, name) => event => props.removeItem(id, +price, name),
+    onUpdate: props => (id, price, name) => event => props.updateItem(id, +price, name, +event.currentTarget.value),
   }),
   withStyles(theme => ({
     root: {
       margin: 'auto',
       maxWidth: 1280,
       paddingTop: 16,
-      paddingBottom: 16,
+      paddingBottom: 80,
+    },
+    greeting: {
+      '@media only screen and (max-width: 480px)': {
+        fontSize: 16,
+      },
     },
     priceSum: {
       textAlign: 'right',
@@ -125,18 +130,18 @@ const enhance = compose(
 
 const ProductList = ({ classes, memberID, items, onAdd, onRemove, onUpdate, prevSum, sum, reciptOpen, setReciptOpen }) => (
   <div className={classes.root}>
-    <Typography type="display2" color="primary" align="center" gutterBottom>Let's buy something{memberID ? `, ${memberID} ` : ''}!</Typography>
+    <Typography className={classes.greeting} type="display2" color="primary" align="center" gutterBottom>Let's buy something{memberID ? `, ${memberID} ` : ''}!</Typography>
     <Grid container spacing={0}>
       {
         productItems.map(pi => (
-          <Grid key={pi.id} xs={12} sm={6} md={4} lg={3}>
-            <ProductItem onAdd={onAdd(pi.id, pi.price)} onRemove={onRemove(pi.id, pi.price)} onUpdate={onUpdate(pi.id, pi.price)}
+          <Grid key={pi.id} xs={12} sm={6} md={4} lg={3} item>
+            <ProductItem onAdd={onAdd(pi.id, pi.price, pi.name)} onRemove={onRemove(pi.id, pi.price, pi.name)} onUpdate={onUpdate(pi.id, pi.price, pi.name)}
               name={pi.name} image={pi.image} quantity={items[pi.id] ? items[pi.id].count : 0} price={+pi.price} />
           </Grid>
         ))
       }
     </Grid>
-    <Button onClick={() => setReciptOpen(true)} raised aria-label="shopping" className={classes.shoppingBtn} color="primary">
+    <Button disabled={sum === 0} onClick={() => setReciptOpen(true)} raised aria-label="shopping" className={classes.shoppingBtn} color="primary">
       <ShoppingCart color="inherit" />
       <Typography type="title" color="inherit">  
         <CountUp

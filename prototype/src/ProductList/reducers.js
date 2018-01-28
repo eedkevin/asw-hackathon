@@ -13,6 +13,7 @@ export const products = (state = initialState, action) => {
         ...state.items,
         [action.payload.productID]: {
           price: action.payload.price,
+          name: action.payload.name,
           count: (state.items[action.payload.productID] ? state.items[action.payload.productID].count : 0) + 1,
         },
       };
@@ -28,6 +29,7 @@ export const products = (state = initialState, action) => {
         ...state.items,
         [action.payload.productID]: {
           price: action.payload.price,
+          name: action.payload.name,
           count: Math.max(0, (state.items[action.payload.productID] ? state.items[action.payload.productID].count : 0) - 1),
         },
       };
@@ -43,6 +45,7 @@ export const products = (state = initialState, action) => {
         ...state.items,
         [action.payload.productID]: {
           price: action.payload.price,
+          name: action.payload.name,
           count: Math.max(0, action.payload.quantity),
         },
       };
