@@ -9,7 +9,6 @@ app.use(bodyParser());
 app.post('/recommend-items', async function (req, res, next) {
   try {
     const { memberId, items = [] } = req.body;
-    console.log(req.body);
     const response = await axios.request({
       method: 'post',
       url: 'https://asiasoutheast.services.azureml.net/workspaces/bd9ab81f41ff4248ab95c6a76d8f84b0/services/0697a29d91b04e5fb40bf3d7e1b2451b/execute?api-version=2.0&details=true',
