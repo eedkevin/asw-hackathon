@@ -2,21 +2,32 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import moment from 'moment';
-import { compose, setDisplayName } from 'recompose';
+import { compose, setDisplayName, lifecycle } from 'recompose';
 import { format } from 'currency-formatter';
 import { withStyles } from 'material-ui/styles';
 import Divider from 'material-ui/Divider';
 import Dialog from 'material-ui/Dialog';
 import List, { ListItem, ListItemText } from 'material-ui/List';
 import QRCode from 'qrcode-react';
+import axios from 'axios';
 import Typography from 'material-ui/Typography';
+import productList from './product_price';
+import { setRecommenedItems } from './actions';
+
+const products = {};
+productList.map(p => {
+  products[p.FIELD1] = p;
+});
 
 const enhance = compose(
-  setDisplayName('@pages/ProductList'),
+  setDisplayName('@pages/Receipt'),
   withRouter,
   connect(state => ({
+    memberID: state.landing.memberID,
     items: state.products.items,
     sum: state.products.sum,
+  }), dispatch => ({
+    setRecommendedItems: (items) => dispatch(setRecommenedItems(items)),
   })),
   withStyles({
     dialog: {
@@ -27,6 +38,25 @@ const enhance = compose(
       padding: 0,
     },
   }),
+  lifecycle({
+    async componentDidUpdate() {
+      const { data } = await axios.request({
+        method: 'post',
+        url: '/recommend-items',
+        headers: {
+          'content-type': 'application/json',
+        },
+        data: {
+          memberId: this.props.memberID,
+          items: Object.keys(this.props.items).map(key => ({
+            id: key,
+            quantity: this.props.items[key].count,
+          })),
+        },
+      });
+      this.props.setRecommendedItems(data);
+    },
+  })
 );
 
 const ProductItem = compose(

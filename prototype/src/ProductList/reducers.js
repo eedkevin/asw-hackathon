@@ -1,4 +1,4 @@
-import { ADD_PRODUCT_IN_CART, REMOVE_PRODUCT_IN_CART, UPDATE_PRODUCT_IN_CART } from './actions';
+import { ADD_PRODUCT_IN_CART, REMOVE_PRODUCT_IN_CART, UPDATE_PRODUCT_IN_CART, SET_RECOMMENDED_ITEMS } from './actions';
 
 const initialState = {
   items: {},
@@ -54,6 +54,12 @@ export const products = (state = initialState, action) => {
         items: newItems,
         prevSum: state.sum,
         sum: Object.keys(newItems).reduce((sum, v) => sum + newItems[v].count * newItems[v].price, 0),
+      };
+    }
+    case SET_RECOMMENDED_ITEMS: {
+      return {
+        ...state,
+        rec: [ ...action.payload.items ],
       };
     }
     default:

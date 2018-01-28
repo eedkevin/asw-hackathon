@@ -12,8 +12,7 @@ import Add from 'material-ui-icons/Add';
 import Remove from 'material-ui-icons/Remove';
 import Button from 'material-ui/Button';
 import CountUp from 'react-countup';
-import faker from 'faker';
-import uuid from 'uuid';
+import productList from './products';
 import {
   addProductInCart,
   removeProductInCart,
@@ -21,15 +20,14 @@ import {
 } from './actions';
 
 import Recipt from './Recipt';
+import _ from 'lodash';
 
-faker.locale = 'en';
-
-const productItems = new Array(20).fill(null).map(() => ({
-  id: uuid.v4(),
-  name: faker.commerce.productName(),
-  price: faker.finance.amount(50, 2000, 1),
-  image: 'http://www.avenuek.com.my/file/2016/06/ws-logo1.jpg',
-}));
+const productItems = _.sampleSize(productList.filter(p => +p.FIELD8).map(product => ({
+  id: product.FIELD1,
+  name: product.FIELD3,
+  price: +product.FIELD8,
+  image: product.IMAGE,
+})), 20);
 
 const ProductItem = compose(
   setDisplayName('@components/ProductItem'),

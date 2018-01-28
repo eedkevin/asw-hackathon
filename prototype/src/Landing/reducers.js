@@ -1,7 +1,7 @@
 import { SET_MEMBER_ID } from './actions';
 
 const initialState = {
-  memberID: null,
+  memberID: 0,
 };
 
 export const landing = (state = initialState, action) => {
@@ -9,7 +9,7 @@ export const landing = (state = initialState, action) => {
     case SET_MEMBER_ID: {
       return {
         ...state,
-        memberID: action.payload.memberID,
+        memberID: action.payload.memberID || 0,
       };
     }
     default:
