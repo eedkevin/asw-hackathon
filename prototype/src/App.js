@@ -7,7 +7,7 @@ import { createHashHistory } from 'history';
 import configureStore from './store';
 import ProductList from './ProductList';
 import Landing from './Landing';
-import Coupan from './Coupan';
+import Coupon from './Coupon';
 
 import Reboot from 'material-ui/Reboot';
 import cyan from 'material-ui/colors/cyan';
@@ -35,7 +35,7 @@ class App extends Component {
             <main>
               <Route exact path="/" component={Landing} />
               <Route exact path="/products" component={ProductList} />
-              <Route exact path="/coupan" component={Coupan} />
+              <Route exact path="/coupon" component={Coupon} />
             </main>
           </ConnectedRouter>
         </MuiThemeProvider>

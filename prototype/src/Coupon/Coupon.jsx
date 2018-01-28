@@ -52,7 +52,7 @@ const CoupanComponent = ({
           <img className={classes.image} src={image} alt="" />
         </div>
         <div>
-          <Typography className={classes.title} type="display1" color="primary" align="left">Coupan</Typography>
+          <Typography className={classes.title} type="display1" color="primary" align="left">Coupon</Typography>
           <Typography className={classes.discount} type="display3" align="right">80% Off</Typography>
           <Barcode value={`Discount on ${name}`} height={20} width={1} fontSize={12} />
         </div>

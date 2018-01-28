@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import moment from 'moment';
-import { compose, setDisplayName, withState } from 'recompose';
+import { compose, setDisplayName } from 'recompose';
 import { format } from 'currency-formatter';
 import { withStyles } from 'material-ui/styles';
 import Divider from 'material-ui/Divider';
@@ -18,7 +18,6 @@ const enhance = compose(
     items: state.products.items,
     sum: state.products.sum,
   })),
-  withState('coupanOpen', 'setCoupanOpen', false),
   withStyles({
     dialog: {
       maxWidth: 300,
@@ -58,7 +57,7 @@ const ProductItem = compose(
   </Typography>
 ));
 
-const Recipt = ({ classes, history, items, sum, open, onClose, coupanOpen, setCoupanOpen }) => (
+const Recipt = ({ classes, history, items, sum, open, onClose }) => (
   <Dialog classes={{ paper: classes.dialog }} open={open} onClose={onClose}>
     <div style={{ padding: 16 }}>
       <Typography type="subheading" align="center">
@@ -103,11 +102,11 @@ const Recipt = ({ classes, history, items, sum, open, onClose, coupanOpen, setCo
       </ListItem>
       <div style={{ margin: 16 }}>
       <Typography type="body1" align="left" gutterBottom>
-        Coupan: Special For You
+        Coupon: Special For You
       </Typography>
         <div style={{ display: 'flex' }}>
           <div style={{ position: 'relative' }}>
-            <span onClick={() => history.push('coupan')} style={{ float: 'left', marginRight: 16 }}>
+            <span onClick={() => history.push('coupon')} style={{ float: 'left', marginRight: 16 }}>
               <QRCode />
             </span>
             <div style={{ height: 'calc(100% - 4px)', display: 'flex', flexDirection: 'column' }}>
